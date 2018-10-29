@@ -1,5 +1,5 @@
 from Youtube import *
-from base_de_datos import SQlite
+from base_de_datos import sqlite3
 from dos_youtube import AppYoutube
 from time import sleep
 

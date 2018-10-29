@@ -15,7 +15,8 @@ def main():
                     FECHA TEXT NOT NULL,
                     LIKES INTEGER NOT NULL,
                     VISTAS INTEGER NOT NULL,
-                    DESCRIPCION TEXT NOT NULL)''')
+                    DESCRIPCION TEXT NOT NULL
+                )''')
 
     #crear tabla CATEGORIA
     cursor.execute('''CREATE TABLE CATEGORIA

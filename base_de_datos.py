@@ -1,4 +1,3 @@
-
 import sqlite3
 from Youtube import *
 
@@ -88,18 +87,18 @@ if __name__ == '__main__':
     base_de_datos = SQlite()
 
     #Guardar video
-    # db_video = base_de_datos.GuardarVideo(v)
-    # print(db_video)
+     db_video = base_de_datos.GuardarVideo(v)
+     print(db_video)
 
-    # Get one video
-    # video_de_query = base_de_datos.MostrarVideo(7)
-    # print(video_de_query.Id)
-    # print(video_de_query.Nombre)
-    # print(video_de_query.Categorias)
+     #Get one video
+     video_de_query = base_de_datos.MostrarVideo(7)
+     print(video_de_query.Id)
+     print(video_de_query.Nombre)
+     print(video_de_query.Categorias)
 
-    # base_de_datos.BorrarVideo(4)
+     base_de_datos.BorrarVideo(4)
 
-    # base_de_datos.ModificarVideo(v)
+     base_de_datos.ModificarVideo(v)
 
     # Get All videos
     videos = base_de_datos.MostrarLista()
