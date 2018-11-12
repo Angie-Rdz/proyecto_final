@@ -26,13 +26,21 @@ class AppYoutube(AbstractYoutube):
             Duracion = result5['contentDetails']['duration']
 
         return Video(Titulo, Duracion, NombreCanal, Publicacion, Likes, Vistas, Descripcion)
+class videos():
+    y = AppYoutube()
+
+    vid = y.InfoVideo('https://www.youtube.com/watch?v=Z58XTzv0ALQ')
+
 
 if __name__ == '__main__':
     y = AppYoutube()
-    vid = y.InfoVideo('https://www.youtube.com/watch?v=7I7u_XLtFa0')
-
+    url=input("Ingrese url: ")
+    vid = y.InfoVideo(url)
+    print(vid.Titulo)
     print(vid.Descripcion)
-    print(vid.Nombre)
-    print(vid.Canal)
     print(vid.Duracion)
+    print(vid.NombreCanal)
     print(vid.Fecha)
+    print(vid.Likes)
+    print(vid.Descripcion)
+    print(vid.Vistas)

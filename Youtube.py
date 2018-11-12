@@ -2,22 +2,22 @@ from abc import ABC, abstractmethod
 
 
 class Video():
-    def __init__(self, nombre, duracion, canal, fecha, likes, vistas, descripcion, id=None, categorias=None):
+    def __init__(self, titulo, duracion, canal, fecha, likes, vistas, descripcion, id=None, compartidas=None):
         self.Id = id
-        self.Nombre = nombre
+        self.Titulo = titulo
         self.Duracion = duracion
-        self.Canal = canal
-        self.Categorias = categorias
+        self.NombreCanal = canal
         self.Fecha = fecha
         self.Likes = likes
         self.Vistas = vistas
         self.Descripcion = descripcion
+        self.Compartidas = compartidas
 
 
 class Categoria():
     def __init__(self, id, nombre):
         self.Id = id
-        self.Nombre = nombre
+        self.Titulo = nombre
 
 
 class AbstractRepo(ABC):
@@ -50,4 +50,4 @@ class AbstractYoutube(ABC):
 
 if __name__ == "__main__":
     cat = Categoria(24, "algo")
-    print(cat.Nombre)
+    print(cat.Titulo)

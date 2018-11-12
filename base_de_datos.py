@@ -10,8 +10,8 @@ class SQlite(AbstractRepo):
 
     def GuardarVideo(self, video):
         # Insertar video
-        v = (video.Nombre, video.Duracion, video.Canal, video.Fecha, video.Likes, video.Vistas, video.Descripcion)
-        self.cursor.execute("INSERT INTO VIDEO (NOMBRE, DURACION,CANAL,FECHA,LIKES,VISTAS,DESCRIPCION) VALUES (?,?,?,?,?,?,?)", v)
+        v = (video.Id,video.Nombre, video.Duracion, video.Canal, video.Fecha, video.Likes, video.Vistas, video.Descripcion,video.Compartidas)
+        self.cursor.execute("INSERT INTO VIDEO (ID,NOMBRE,DURACION,CANAL,FECHA,LIKES,VISTAS,DESCRIPCION,Compartidas) VALUES (?,?,?,?,?,?,?,?,?)", v)
         self.conexion.commit()#guarda cambios
         video.Id = self.cursor.lastrowid
 
@@ -42,9 +42,10 @@ class SQlite(AbstractRepo):
         return videos
 
     def MostrarVideo(self, id):
-        self.cursor.execute("SELECT * from VIDEO where ID=?", str(id))
+        self.id=1
+        self.cursor.execute("SELECT * from VIDEO where ID=1", str(id))
         db_video = self.cursor.fetchone()
-        video = Video(db_video[1], db_video[2], db_video[3], db_video[4], db_video[5], db_video[6], db_video[7], id=db_video[0], categorias=[])
+        video = Video(db_video[1], db_video[2], db_video[3], db_video[4], db_video[5], db_video[6], db_video[7], id=db_video[0], categorias=[8])
 
         self.cursor.execute("SELECT * from CATEGORIA where VIDEO_ID=?", (str(id),))
         for row in self.cursor.fetchall():
@@ -82,23 +83,23 @@ class SQlite(AbstractRepo):
         self.conexion.close()
 
 if __name__ == '__main__':
-    v = Video("nombre diferente", "13", "canal de prueba", "09/09/2018", 53, 100, "video", id=3, categorias=['una', 'y dos'])
+    v = Video("1","nombre diferente", "13", "canal de prueba", "09/09/2018", 53, 100, "video", "152")
 
     base_de_datos = SQlite()
 
     #Guardar video
-     db_video = base_de_datos.GuardarVideo(v)
-     print(db_video)
+    db_video = base_de_datos.GuardarVideo(v)
+    print(db_video)
 
      #Get one video
-     video_de_query = base_de_datos.MostrarVideo(7)
-     print(video_de_query.Id)
-     print(video_de_query.Nombre)
-     print(video_de_query.Categorias)
+    video_de_query = base_de_datos.MostrarVideo()
+    print(video_de_query.Id)
+    print(video_de_query.Nombre)
+    print(video_de_query.Categorias)
 
-     base_de_datos.BorrarVideo(4)
+    base_de_datos.BorrarVideo(4)
 
-     base_de_datos.ModificarVideo(v)
+    base_de_datos.ModificarVideo(v)
 
     # Get All videos
     videos = base_de_datos.MostrarLista()

@@ -7,6 +7,7 @@ def main():
     cursor = conexion.cursor()
 
     #crear tabla VIDEO
+
     cursor.execute('''CREATE TABLE VIDEO
                     (ID integer PRIMARY KEY,
                     NOMBRE TEXT NOT NULL,
@@ -15,17 +16,12 @@ def main():
                     FECHA TEXT NOT NULL,
                     LIKES INTEGER NOT NULL,
                     VISTAS INTEGER NOT NULL,
-                    DESCRIPCION TEXT NOT NULL
+                    DESCRIPCION TEXT NOT NULL,
+                    Compartidas INTEGER NOT NULL
                 )''')
 
-    #crear tabla CATEGORIA
-    cursor.execute('''CREATE TABLE CATEGORIA
-                    (ID integer PRIMARY KEY,
-                    VIDEO_ID INTEGER NOT NULL,
-                    NOMBRE TEXT NOT NULL,
-                    FOREIGN KEY (VIDEO_ID) REFERENCES VIDEO (ID))''')
 
-    conexion.close()
+
 
 if __name__ == "__main__":
     main()
