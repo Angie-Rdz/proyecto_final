@@ -15,7 +15,7 @@ class TestYTapp(unittest.TestCase):
         self.sql.GuardarVideo(self.video)
 
         ################################
-        self.video2 = Video('video1',12,'El video', "25 feb 2018", 2500, 10000,'video')
+        self.video2 = Video('video1',12,'El video', "12 nov 2018", 2500, 10000,'video')
 
     #Hace las pruebas de guardar un video y que todos sus atributos estén almacenados correctamente
     def test_Video(self):
@@ -24,7 +24,7 @@ class TestYTapp(unittest.TestCase):
         self.assertEqual(self.video2.Nombre, ('video1'))
         self.assertEqual(self.video2.Duracion, 12 )
         self.assertEqual(self.video2.Canal, 'El video' )
-        self.assertEqual(self.video2.Fecha, "25 feb 2018" )
+        self.assertEqual(self.video2.Fecha, "12 nov 2018" )
         self.assertEqual(self.video2.Likes, 2500 )
         self.assertEqual(self.video2.Vistas, 10000 )
         self.assertEqual(self.video2.Descripcion, 'video' )
@@ -33,7 +33,7 @@ class TestYTapp(unittest.TestCase):
         self.assertNotEqual(self.video2.Duracion, '12')
         self.assertNotEqual(self.video2.Likes, '2500' )
         self.assertNotEqual(self.video2.Vistas, '10000' )
-
+        self.assertNotEqual(self.video2.Compartidas, 999)
 
     def test_modVideo(self):
 
@@ -45,9 +45,6 @@ class TestYTapp(unittest.TestCase):
         print("test_borrar")
         self.assertTrue(self.sql.BorrarVideo(5))
 
-
-
-
     def test_infoVideo(self):
 
         print("test_infoVideo")
@@ -58,7 +55,7 @@ class TestYTapp(unittest.TestCase):
         self.assertEqual(self.yt.InfoVideo("https://www.youtube.com/watch?v=dDmhThqxDw0").Likes, self.video.Likes)
         self.assertEqual(self.yt.InfoVideo("https://www.youtube.com/watch?v=dDmhThqxDw0").Vistas, self.video.Vistas)
         self.assertEqual(self.yt.InfoVideo("https://www.youtube.com/watch?v=dDmhThqxDw0").Descripcion, self.video.Descripcion)
-
+        self.assertEqual(self.yt.InfoVideo("https://www.youtube.com/watch?v=dDmhThqxDw0").Compartidas, self.video.Compartidas)
 
 if __name__ == '__main__':
     unittest.main()
