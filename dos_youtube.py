@@ -14,7 +14,7 @@ class AppYoutube(AbstractYoutube):
             NombreCanal = (result['snippet']['channelTitle'])
             Titulo = (result['snippet']['title'])
             Descripcion = (result['snippet']['description'])
-            Publicacion = result['snippet']['publishedAt']
+            Fecha = result['snippet']['publishedAt']
 
         results1 = youtube.videos().list(id=ids, part='statistics').execute()
         for result2 in results1.get('items', []):
@@ -24,8 +24,8 @@ class AppYoutube(AbstractYoutube):
         results4 = youtube.videos().list(id=ids, part='contentDetails').execute()
         for result5 in results4.get('items', []):
             Duracion = result5['contentDetails']['duration']
-        youtube.close()
-        return Video(Titulo, Duracion, NombreCanal, Publicacion, Likes, Vistas, Descripcion)
+
+        return Video(Titulo, Duracion, NombreCanal, Fecha, Likes, Vistas, Descripcion)
 
 class videos():
     y = AppYoutube()
