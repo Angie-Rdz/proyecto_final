@@ -1,61 +1,66 @@
 import unittest
 from unittest.mock import Mock
 from dos_youtube import AppYoutube
-from base_de_datos import SQlite
+from main import *
 from Youtube import Video, AbstractRepo, AbstractYoutube
+from base_de_datos import SQlite
 
 class TestYTapp(unittest.TestCase):
 
     def setUp(self):
 
         self.yt = AppYoutube()
-        self.videomock = Mock(Id = 5, Nombre = "MIRANDA.-PERFECTA", Duracion = "PT3M45S", Canal = "Xaxiri Castro",  Fecha= "2008-03-28T21:54:50.000Z", Likes = self.yt.InfoVideo("https://www.youtube.com/watch?v=dDmhThqxDw0").Likes, Vistas = self.yt.InfoVideo("https://www.youtube.com/watch?v=dDmhThqxDw0").Vistas, Descripcion = "BUENA ROLA DE ESTE GRUPO ARGENTINO!!!")
-        self.video = Video(self.videomock.Nombre,self.videomock.Duracion,self.videomock.Canal,self.videomock.Fecha,self.videomock.Likes,self.videomock.Vistas,self.videomock.Descripcion)
-        self.sql = SQlite()
-        self.sql.GuardarVideo(self.video)
+        self.videomock = Mock(Id=5, Titulo = "MIRANDA.-PERFECTA", Duracion = "PT3M45S", NombreCanal = "Xaxiri Castro",  Fecha= "2008-03-28T21:54:50.000Z", Likes = self.yt.InfoVideo("https://www.youtube.com/watch?v=dDmhThqxDw0").Likes, Vistas = self.yt.InfoVideo("https://www.youtube.com/watch?v=dDmhThqxDw0").Vistas, Descripcion = "BUENA ROLA DE ESTE GRUPO ARGENTINO!!!",Compartidas=150)
+        self.video = Video(self.videomock.Titulo,self.videomock.Duracion,self.videomock.NombreCanal,self.videomock.Fecha,self.videomock.Likes,self.videomock.Vistas,self.videomock.Descripcion,self.videomock.Compartidas)
+        #self.sql = GuardarVideo()
+        #self.sql.GuardarVideo(self.video)
 
         ################################
-        self.video2 = Video('video1',12,'El video', "12 nov 2018", 2500, 10000,'video')
-
+        self.video2 = Video('video1','12','El video', "12 nov 2018", '2500', '10000','video')
+        self.Compartidas='200'
     #Hace las pruebas de guardar un video y que todos sus atributos estén almacenados correctamente
     def test_Video(self):
 
         print("test_Video")
-        self.assertEqual(self.video2.Nombre, ('video1'))
-        self.assertEqual(self.video2.Duracion, 12 )
-        self.assertEqual(self.video2.Canal, 'El video' )
+        self.assertEqual(self.video2.Titulo, ('video1'))
+        self.assertEqual(self.video2.Duracion, '12' )
+        self.assertEqual(self.video2.NombreCanal, 'El video' )
         self.assertEqual(self.video2.Fecha, "12 nov 2018" )
-        self.assertEqual(self.video2.Likes, 2500 )
-        self.assertEqual(self.video2.Vistas, 10000 )
+        self.assertEqual(self.video2.Likes, '2500')
+        self.assertEqual(self.video2.Vistas, '10000')
         self.assertEqual(self.video2.Descripcion, 'video' )
 
-        #Revisando el tipo de dato
-        self.assertNotEqual(self.video2.Duracion, '12')
-        self.assertNotEqual(self.video2.Likes, '2500' )
-        self.assertNotEqual(self.video2.Vistas, '10000' )
-        self.assertNotEqual(self.video2.Compartidas, 999)
+
+    
 
     def test_modVideo(self):
 
         print("test_modVideo")
-        self.assertTrue(self.sql.ModificarVideo(self.video))
+        SQlite.ModificarVideo(self.video2.Id,self.Compartidas)
+        actual=SQlite.MostrarVideo(self.video2.Id)
+        expected=['video1',12,'El video', "12 nov 2018", 2500, 10000,'video','50','200']
+        self.assertListEqual(expected,actual)
 
     def test_borrar(self):
 
         print("test_borrar")
-        self.assertTrue(self.sql.BorrarVideo(5))
+        SQlite.BorrarVideo(self.video2.Id)
+        actual=SQlite.MostrarVideo(self.video2.Id)
+        expected=[]
+        self.assertListEqual(expected,actual)
 
     def test_infoVideo(self):
 
         print("test_infoVideo")
-        self.assertEqual(self.yt.InfoVideo("https://www.youtube.com/watch?v=dDmhThqxDw0").Nombre, self.video.Nombre)
+
+        self.assertEqual(self.yt.InfoVideo("https://www.youtube.com/watch?v=dDmhThqxDw0").Titulo, self.video.Titulo)
         self.assertEqual(self.yt.InfoVideo("https://www.youtube.com/watch?v=dDmhThqxDw0").Duracion, self.video.Duracion)
-        self.assertEqual(self.yt.InfoVideo("https://www.youtube.com/watch?v=dDmhThqxDw0").Canal, self.video.Canal)
+        self.assertEqual(self.yt.InfoVideo("https://www.youtube.com/watch?v=dDmhThqxDw0").NombreCanal, self.video.NombreCanal)
         self.assertEqual(self.yt.InfoVideo("https://www.youtube.com/watch?v=dDmhThqxDw0").Fecha, self.video.Fecha)
         self.assertEqual(self.yt.InfoVideo("https://www.youtube.com/watch?v=dDmhThqxDw0").Likes, self.video.Likes)
         self.assertEqual(self.yt.InfoVideo("https://www.youtube.com/watch?v=dDmhThqxDw0").Vistas, self.video.Vistas)
         self.assertEqual(self.yt.InfoVideo("https://www.youtube.com/watch?v=dDmhThqxDw0").Descripcion, self.video.Descripcion)
-        self.assertEqual(self.yt.InfoVideo("https://www.youtube.com/watch?v=dDmhThqxDw0").Compartidas, self.video.Compartidas)
+
 
 if __name__ == '__main__':
     unittest.main()

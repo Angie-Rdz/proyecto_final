@@ -8,47 +8,32 @@ import random
 conexion = sqlite3.connect('Youtube.db')
 cursor = conexion.cursor()
 
-def GuardarVideo(AppYoutube):
-    def InfoVideo(self, url):
-        ID=random.randrange(100)
-        y = AppYoutube()
-        vid = y.InfoVideo()
-        #cursor.execute("INSERT INTO VIDEO (ID,NOMBRE,DURACION,CANAL,FECHA,LIKES,VISTAS,DESCRIPCION,COMPARTIDAS)VALUES(?,?,?,?,?,?,?,?,?)",(ID,vid.Titulo,vid.Duracion,vid.NombreCanal,vid.Fecha,vid.Likes,vid.Descripcion,150))
-        #conexion.commit()#guarda cambios
-        Guardar_Video=cursor.execute("INSERT INTO VIDEO (ID,NOMBRE,DURACION,CANAL,FECHA,LIKES,VISTAS,DESCRIPCION,COMPARTIDAS)VALUES(?,?,?,?,?,?,?,?,?)",(ID,vid.Titulo,vid.Duracion,vid.NombreCanal,vid.Fecha,vid.Likes,vid.Descripcion,150))
-        conexion.commit()#guarda cambios)
-        return Guardar_Video.fetchall()
-        cursor.close()
+def GuardarVideo(AppYoutube, SQlite, url, Compartidas):
+    # Buscar video en youtube
+    vid = AppYoutube.InfoVideo(url)
+    # Agregar las categorias
+    # Guardar
+    new_video = SQlite.GuardarVideo(vid)
+    # Mostrar el id con el que se guardó
+    #return new_video.Id
 
 
 def MostrarLista():
-    #cursor.execute("SELECT * from VIDEO")
-    #conexion.commit()
-    MostrarLista=cursor.execute("SELECT * from VIDEO")
-    return MostrarLista.fetchall()
-    cursor.close()
+    lista = SQlite.MostrarLista()
+    return lista
 
-def MostrarVideo(AppYoutube):
-    X=input("Para ver un VIDEO ingresa el ID:")
-    cursor.execute("SELECT * from VIDEO WHERE ID=?",(X,))
-    conexion.commit()
-    MostrarVideo=cursor.execute("SELECT * from VIDEO WHERE ID=?",(X,))
-    return MostrarVideo.fetchall()
-    cursor.close()
+def MostrarVideo(id):
+    # recibiendo el ID del video, te debe mostrar el video con sus demás datos
+    muestra_video=SQlite.MostrarVideo(id)
+    return muestra_video
 
-def ModificarVideo():
-    X=input("Ingrese el id del video que desea modificar:")
-    Compartidas=int(input("ingrese el numero de veces compartido"))
-    cursor.execute("Update VIDEO SET Compartidas=? WHERE ID=?",(Compartidas,X))
-    conexion.commit()
-    ModificarVideo=cursor.execute("Update VIDEO SET Compartidas=? WHERE ID=?",(Compartidas,X))
-    return ModificarVideo.fetchall()
-def BorarVideo(equipoRepo,id):
-    X=input("Ingrese el id del video que desea eliminar:")
-    cursor.execute("DELETE FROM VIDEO WHERE ID=?",(X,))
-    conexion.commit()
-    BorrarVideo=cursor.execute("DELETE VIDEO WHERE ID=?",(X,))
-    return BorrarVideo.fetchall()
+def ModificarVideo(id,Compartidas):
+    modificar = SQlite.ModificarVideo(id,Compartidas)
+    return modificar
+
+def BorrarVideo(id):
+    borrar = SQlite.BorrarVideo(id)
+    return borrar
 
 
 def main():
@@ -56,27 +41,14 @@ def main():
     YT= AppYoutube()
     while True:
         bienvenido = "------------- Bienvenido ------------"
-        opcion = int(input("-----Menu----- \n1.Guardar video \n2.Ver Lista de videos guardados \n3.Ver Video \n4.Modificar video \n5.Borrar video \n0.Salir\n"))
+        opcion = int(input("---Menu Principal--- \n1.Guardar \n2.Ver Lista \n3.Ver Video \n4.Modificar Video \n5.Borrar Video \n0.Salir\n"))
         if opcion == 1:
-            if MostrarLista() == None:
-                print("No hay videos guardados")
-            else:
-                ID=random.randrange(100000)
-                y = AppYoutube()
-                url=input("Ingrese url: ")
-                Compartidas=int(input("Ingrese numero de veces compartido: "))
-                vid = y.InfoVideo(url)
-                #cursor.execute("INSERT INTO VIDEO (ID,NOMBRE,DURACION,CANAL,FECHA,LIKES,VISTAS,DESCRIPCION,COMPARTIDAS) VALUES(?,?,?,?,?,?,?,?,?)",(ID,vid.Titulo,vid.Duracion,vid.NombreCanal,vid.Fecha,vid.Likes,vid.Vistas,vid.Descripcion,Compartidas))
-                #conexion.commit()#guarda cambios
-                Guardar_Video=cursor.execute("INSERT INTO VIDEO (ID,NOMBRE,DURACION,CANAL,FECHA,LIKES,VISTAS,DESCRIPCION,COMPARTIDAS) VALUES(?,?,?,?,?,?,?,?,?)",(ID,vid.Titulo,vid.Duracion,vid.NombreCanal,vid.Fecha,vid.Likes,vid.Vistas,vid.Descripcion,Compartidas))
-                print("Se creo el video")
-                conexion.commit()#guarda cambios
-                F=input("Presiona cualquier tecla para continuar...")
-                continue
-                #return Guardar_Video.fetchall()
-                #cursor.close()
+            url = input("Ingresa URL para guardar un video :"+"\n")
+            Compartidas = input("Ingresa numero de veces compartidas :"+"\n")
+            GuardarVideo(YT,BD,url,Compartidas)
 
-                #continue
+
+            continue
 
         elif opcion == 2:
             if MostrarLista() == None:
@@ -87,37 +59,30 @@ def main():
                 w=MostrarLista()
                 for x in w:
                     print(x)
-                F=input("Presiona cualquier tecla para continuar...")
+
                 continue
 
 
         elif opcion == 3:
 
-            print(MostrarVideo(AppYoutube))
-            F=input("Presiona cualquier tecla para continuar...")
+            id=input("inserte id de video: ")
+            print (MostrarVideo(id))
+
             continue
 
         elif opcion == 4:
+            id=input("inserte id de video a modificar:")
+            Compartidas=int(input("ingrese el numero de veces compartido"))
+            ModificarVideo(id,Compartidas)
 
-            X=input("Ingrese el id del video que desea modificar:")
-            Compartidas=int(input("ingrese el numero de veces compartido: "))
-            #cursor.execute("Update VIDEO SET Compartidas=? WHERE ID=?",(Compartidas,X))
-            ModificarVideo=cursor.execute("Update VIDEO SET Compartidas=? WHERE ID=?",(Compartidas,X))
-            print("Video modificado correctamente")
-            conexion.commit()
-            F=input("Presiona cualquier tecla para continuar...")
-            #return ModificarVideo.fetchall()
+
+
             continue
 
 
         elif opcion == 5:
-            X=input("Ingrese el id del video que desea eliminar:")
-            BorrarVideo=cursor.execute("DELETE FROM VIDEO WHERE ID=?",(X,))
-            print("Video eliminado")
-            conexion.commit()
-            F=input("Presiona cualquier tecla para continuar...")
-            continue
-            #return BorrarVideo.fetchall()
+            id=input("inserte id de video a eliminar:")
+            BorrarVideo(id)
 
         elif opcion == 0:
             print("Saliendo del menú...")
