@@ -8,4 +8,4 @@ install:
   - pip install --upgrade google-api-python-client
 
 script:
-  - python main.py # or py.test for Python versions 3.5 and below
+  - python pruebas_youtube.py # or py.test for Python versions 3.5 and below
