@@ -36,13 +36,7 @@ class TestYTapp(unittest.TestCase):
 
 
 
-    def test_modVideo(self):
-
-        print("test_modVideo")
-        SQlite.ModificarVideo(self.video2.Id,self.video2.Compartidas)
-        actual=SQlite.MostrarVideo(self.video2.Id)
-        expected=[self.video2.Id,'video1',12,'El video', "12 nov 2018", 2500, 10000,'video',self.video2.Compartidas]
-        self.assertListEqual(expected,actual)
+    
 
     def test_borrar(self):
 
